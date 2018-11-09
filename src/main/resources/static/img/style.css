@@ -1,0 +1,11 @@
+body{
+    background-image: url("img/backgroundImg.jpg");
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: 2000px 1400px;
+}
+
+.space{
+    height: 80px;
+
+}

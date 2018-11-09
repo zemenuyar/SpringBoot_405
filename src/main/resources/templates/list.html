@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="base :: header"></head>
+
+<body>
+<div th:replace="base :: nav"></div>
+<div class="space"></div>
+
+<div class="container bg-light">
+
+    <h2>Welcome!</h2>
+    <!--<h2>Insecure page</h2>-->
+
+    <div sec:authorize="!isAuthenticated()">
+        <a href="/login"> Login</a><br />
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <a href="/add"> Add a Message</a><br />
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>Content &nbsp; </th>
+            <th>Sent by &nbsp; </th>
+            <td>Date &nbsp; </td>
+
+        </tr>
+        <tr th:each="message: ${messages}">
+            <td th:text="${message.content}"></td>
+            <td th:text="${message.sentby}"></td>
+            <td th:text="${message.date}"></td>
+            <td>
+                <div sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/edit/{id}(id=${message.id})}">Post</a>-
+                    <a th:href="@{/date/{id}(id=${message.id})}">Edit</a>
+                </div>
+
+                <div sec:authorize="!isAuthenticated()">
+                    <a href="/edit">Edit</a></div><br />
+
+                <div sec:authorize="hasAuthority('USER')">
+                    <a th:href="@{/edit/{id}(id=${message.id})}">Edit</a>
+                    <!--<a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>- -->
+                    <!--<a th:href="@{/detail/{id}(id=${course.id})}">Detail</a>-->
+                </div>
+
+            </td></tr>
+    </table>
+    <h2>Insecure page</h2>
+    <button class="btn btn-success" sec:authorize="isAuthenticated()">
+        <!--<a href="/add"> Add a course</a><br />-->
+        <a href="/logout" class="text-danger"> Logout</a><br />
+    </button>
+    <button class="text-light bg-dark" sec:authorize="isAuthenticated()">
+        <!--<a href="/add"> Add a course</a><br />-->
+        <a href="/register" class="text-light"> Register</a><br />
+    </button>
+
+    <div class="space"></div>
+
+</div>
+
+<footer th:replace="base :: footer"></footer>
+</body>
+</html>
